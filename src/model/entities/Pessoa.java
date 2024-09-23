@@ -7,11 +7,25 @@ public abstract class Pessoa {
 	private String name;
 	private String email;
 	private String dataNascimento;
+	private Double saldoInicial;
 	
-	public Pessoa(String name, String email, String dataNascimento) {
+	public Pessoa() {
+		
+	}
+	
+	public Pessoa(String name, String email, String dataNascimento, Double saldoInicial) {
 		this.name = name;
 		this.dataNascimento = dataNascimento;
 		this.email = email;
+		this.saldoInicial = saldoInicial;
+	}
+	
+	public Double getSaldoInicial() {
+		return this.saldoInicial;
+	}
+	
+	public void setSaldoInicial(Double amount) {
+		this.saldoInicial = amount;
 	}
 
 	public String getName() {
@@ -38,6 +52,8 @@ public abstract class Pessoa {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	public abstract Double totalPrice() throws DomainException;
+	public abstract Double totalPrice();
+	
+	public abstract void comprar() throws DomainException;
 	
 }
