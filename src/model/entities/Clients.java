@@ -1,49 +1,34 @@
 package model.entities;
 
+import java.time.LocalDate;
+
 import model.exceptions.DomainException;
 
 public class Clients extends Pessoa{
-
-	private Integer quantityBuy;
-	private Product product;
 	
 	public Clients() {
 		super();
 	}
 	
-	public Clients(String name, String email, String dataNascimento, Double saldoInicial,
+	public Clients(String name, String email, LocalDate dataNascimento, Double saldoInicial,
 			Product product, Integer quantityBuy) {
-		super(name, email, dataNascimento, saldoInicial);
-		this.quantityBuy = quantityBuy;
-		this.product = product;
+		super(name, email, dataNascimento, saldoInicial, product, quantityBuy);
 	}
 	
-	public Integer getQuantityBuy() {
-		return this.quantityBuy;
-	}
-
-	public void setProduct(Product prod) {
-		this.product = prod;
-	}
-	
-	public Product getProduct() {
-		return this.product;
-	}
-
 	@Override
 	public Double totalPrice() {
-		return product.newPrice() * getQuantityBuy();
+		return getProduct().newPrice() * getQuantityBuy();
 	}
 	
 	@Override 
 	public void comprar() throws DomainException{
-		if(getQuantityBuy() <= product.getQuantity() && (getSaldoInicial() >= totalPrice())) {
-			setSaldoInicial(getSaldoInicial() - (product.newPrice()*getQuantityBuy()));
+		if(getQuantityBuy() <= getProduct().getQuantity() && (getSaldoInicial() >= totalPrice())) {
+			setSaldoInicial(getSaldoInicial() - (getProduct().newPrice()*getQuantityBuy()));
 		}
-		else if(getQuantityBuy() > product.getQuantity()){
+		else if(getQuantityBuy() > getProduct().getQuantity()){
 			throw new DomainException("Erro: Quantidade exigida pelo cliente é maior que o estoque");
 		}
-		else if((product.newPrice() * getQuantityBuy()) > getSaldoInicial()) {
+		else if((getProduct().newPrice() * getQuantityBuy()) > getSaldoInicial()) {
 			throw new DomainException("Erro: Saldo insuficiente do cliente!");
 		}
 	}
